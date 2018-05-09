@@ -2,6 +2,9 @@
 
 [Fluentd](https://fluentd.org/) filter plugin obfuscate email addresses.
 
+[![CodeFactor](https://www.codefactor.io/repository/github/JamesJJ/fluent-plugin-email-obfuscate/badge)](https://www.codefactor.io/repository/github/JamesJJ/fluent-plugin-email-obfuscate)
+[![Gem Version](https://badge.fury.io/rb/fluent-plugin-email-obfuscate.svg)](https://badge.fury.io/rb/fluent-plugin-email-obfuscate)
+
 This filter attempts to parse each field in the record, and will replace the "domain" part of the email address with asterisks.
 
 ### For example:
