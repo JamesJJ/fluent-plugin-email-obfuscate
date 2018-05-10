@@ -58,7 +58,7 @@ DESC
       end
 
       def obfuscate(str)
-        str = str.match(/^([^@]+)(@.+)$/) { |m|
+        strmatch = str.match(/^([^@]+)(@.+)$/) { |m|
            case @mode
            when 'domain_only'
              m[1] + m[2].tr("@.a-zA-Z0-9", "@.*")
@@ -67,8 +67,14 @@ DESC
            else
              hide_partial(m[1]) + m[2].tr("@.a-zA-Z0-9", "@.*")
            end
-        } if @suffix_whitelist.select{ |a| str.downcase.end_with?(a.downcase)}.empty?
-        str
+        }
+        if strmatch.nil?
+          str
+        elsif @suffix_whitelist.select{ |a| str.downcase.end_with?(a.downcase)}.empty?
+          strmatch
+        else
+          str
+        end
       end
 
       def deep_process(o)
