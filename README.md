@@ -5,7 +5,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/JamesJJ/fluent-plugin-email-obfuscate/badge)](https://www.codefactor.io/repository/github/JamesJJ/fluent-plugin-email-obfuscate)
 [![Gem Version](https://badge.fury.io/rb/fluent-plugin-email-obfuscate.svg)](https://badge.fury.io/rb/fluent-plugin-email-obfuscate)
 
-This filter attempts to parse each field in the record, and will replace the "domain" part of the email address with asterisks.
+This filter attempts to parse each field in the record, and will obfuscate all or part of any email addresses it finds, by replacing with the same number of asterisks.
 
 ### For example:
 
@@ -69,22 +69,39 @@ $ bundle
 
 ## Configuration
 
-_CURRENTLY THIS FILTER DOES NOT ACCEPT ANY CONFIGURATION_
-
-<!---
-You can generate configuration template:
+Use `email_obfuscate` filter.
 
 ```
-$ fluent-plugin-config-format filter email-obfuscate
+    <filter **>
+        @type email_obfuscate
+        mode <mode>
+        suffix_whitelist <list>
+    </filter>
 ```
 
-You can copy and paste generated documents here.
--->
+### mode (default: partial_name)
+
+mode            | Action | Example
+:--             | :--    | :-- 
+`domain_only`   | Only replace all characters in the domain part | `testuser@*******.***`
+`partial_name`  | Replace all characters in domain and partially in the name | `testu***@*******.***`
+`full`          | Replace all characters in name and domain part of address | `********@*******.***`
+
+_Note: `.` and `@` are never replaced_
+
+### suffix_whitelist (optional)
+
+A list of suffixes not to obfuscate. For example, with config `suffix_whitelist [".example.com", "@example.com"]` the result would be:
+
+Input                        | Action 
+:--                          | :--   
+`user@example.com`           | no change
+`user@subdomain.example.com` | no change
+`user@example.museum`        | obfuscated
 
 ## Todo
 
 * Add tests!
-* Support whitelists of domains not to be obfuscated
 * Support configuration of which fields to act upon
 * . . .
 

@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name    = "fluent-plugin-email-obfuscate"
-  spec.version = "0.0.1"
+  spec.version = "0.0.2"
   spec.authors = ["JamesJJ"]
   spec.email   = ["jj@fcg.fyi"]
 
@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
   spec.executables   = files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = test_files
   spec.require_paths = ["lib"]
+  spec.required_ruby_version = '>= 2.3.0'
 
   spec.add_development_dependency "bundler", "~> 1.14"
   spec.add_development_dependency "rake", "~> 12.0"
