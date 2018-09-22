@@ -4,6 +4,7 @@
 
 [![CodeFactor](https://www.codefactor.io/repository/github/JamesJJ/fluent-plugin-email-obfuscate/badge)](https://www.codefactor.io/repository/github/JamesJJ/fluent-plugin-email-obfuscate)
 [![Gem Version](https://badge.fury.io/rb/fluent-plugin-email-obfuscate.svg)](https://badge.fury.io/rb/fluent-plugin-email-obfuscate)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FJamesJJ%2Ffluent-plugin-email-obfuscate.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FJamesJJ%2Ffluent-plugin-email-obfuscate?ref=badge_shield)
 
 This filter attempts to parse each field in the record, and will obfuscate all or part of any email addresses it finds, by replacing with the same number of asterisks.
 
@@ -110,3 +111,6 @@ Input                        | Action
 * Copyright(c) 2018 JamesJJ 
 * License
   * Apache License, Version 2.0
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FJamesJJ%2Ffluent-plugin-email-obfuscate.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FJamesJJ%2Ffluent-plugin-email-obfuscate?ref=badge_large)
