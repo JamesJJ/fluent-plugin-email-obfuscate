@@ -20,7 +20,7 @@ module Fluent
     class EmailObfuscateFilter < Fluent::Plugin::Filter
       Fluent::Plugin.register_filter("email_obfuscate", self)
 
-      config_param :mode, :string, default: 'partial_name',
+      config_param :mode, :enum, list: [:partial_name, :full, :domain_only],  default: :partial_name,
         desc: <<-DESC
 'full' will replace all characters.
 'partial_name' will replace all characters in the 'domain' half of the address, and a subset of the 'name'.
@@ -38,11 +38,6 @@ DESC
 
       def configure(conf)
         super
-
-        if conf.has_key?('mode')
-          raise ConfigError, "'mode' must be one of: domain_only, full, partial_name" unless
-            ['domain_only', 'full', 'partial_name'].include?(conf.dig('mode'))
-        end
       end
 
       def hide_partial(str)
@@ -60,9 +55,9 @@ DESC
       def obfuscate(str)
         strmatch = str.match(/^([^@]+)(@.+)$/) { |m|
            case @mode
-           when 'domain_only'
+           when :domain_only
              m[1] + m[2].tr("@.a-zA-Z0-9", "@.*")
-           when 'full'
+           when :full
              m[1].gsub(/./, '*') + m[2].tr("@.a-zA-Z0-9", "@.*")
            else
              hide_partial(m[1]) + m[2].tr("@.a-zA-Z0-9", "@.*")
