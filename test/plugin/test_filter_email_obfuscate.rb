@@ -15,15 +15,8 @@ class EmailObfuscateFilterTest < Test::Unit::TestCase
     assert_equal [], d.instance.suffix_whitelist
   end
 
-  test "invalid mode" do
-    assert_raise(Fluent::ConfigError) do
-      create_driver(CONF + %[mode invalid])
-    end
-  end
-
-  test "filter" do
-    d = create_driver
-    sample_records = {
+  def sample_records
+    {
       "f1": "myEmail@example.net",
       "list1": [
         "user1@example.com",
@@ -36,6 +29,16 @@ class EmailObfuscateFilterTest < Test::Unit::TestCase
       },
       "email_string": "Jane Doe <jane@example.name>, John Smith <john@example.name>"
     }
+  end
+
+  test "invalid mode" do
+    assert_raise(Fluent::ConfigError) do
+      create_driver(CONF + %[mode invalid])
+    end
+  end
+
+  test "filter" do
+    d = create_driver
     d.run(default_tag: 'test') do
       d.feed(sample_records)
     end
@@ -49,19 +52,6 @@ class EmailObfuscateFilterTest < Test::Unit::TestCase
 
   test "filter_full" do
     d = create_driver(CONF + %[mode full])
-    sample_records = {
-      "f1": "myEmail@example.net",
-      "list1": [
-        "user1@example.com",
-        "user2@example.org"
-      ],
-      "a": {
-        "nested": {
-          "field": "name3@example.museum"
-        }
-      },
-      "email_string": "Jane Doe <jane@example.name>, John Smith <john@example.name>"
-    }
     d.run(default_tag: 'test') do
       d.feed(sample_records)
     end
@@ -75,19 +65,6 @@ class EmailObfuscateFilterTest < Test::Unit::TestCase
 
   test "filter_domain_only" do
     d = create_driver(CONF + %[mode domain_only])
-    sample_records = {
-      "f1": "myEmail@example.net",
-      "list1": [
-        "user1@example.com",
-        "user2@example.org"
-      ],
-      "a": {
-        "nested": {
-          "field": "name3@example.museum"
-        }
-      },
-      "email_string": "Jane Doe <jane@example.name>, John Smith <john@example.name>"
-    }
     d.run(default_tag: 'test') do
       d.feed(sample_records)
     end
