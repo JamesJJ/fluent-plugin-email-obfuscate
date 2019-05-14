@@ -20,9 +20,10 @@ module Fluent
     class EmailObfuscateFilter < Fluent::Plugin::Filter
       Fluent::Plugin.register_filter("email_obfuscate", self)
 
-      config_param :mode, :enum, list: [:partial_name, :full, :domain_only],  default: :partial_name,
+      config_param :mode, :enum, list: [:name_substring, :partial_name, :full, :domain_only],  default: :partial_name,
         desc: <<-DESC
 'full' will replace all characters.
+'name_substring' will replace the 'name' half of the address, and attempt to retain surrounding context.
 'partial_name' will replace all characters in the 'domain' half of the address, and a subset of the 'name'.
 'domain_only' will only replace characters in the 'domain' half of the address.
 '.' and '@' are never replaced.
@@ -59,6 +60,8 @@ DESC
              m[1] + m[2].tr("@.a-zA-Z0-9", "@.*")
            when :full
              m[1].gsub(/./, '*') + m[2].tr("@.a-zA-Z0-9", "@.*")
+           when :name_substring
+             m[1].gsub(/./, '*') + m[2]
            else
              hide_partial(m[1]) + m[2].tr("@.a-zA-Z0-9", "@.*")
            end
@@ -75,8 +78,15 @@ DESC
       def deep_process(o)
         case o
         when String
-          os = o.scan(/<([^<>]+@[^<>]+)>/)
-          o = os.length.zero? ? obfuscate(o) : deep_process(os).join(", ")
+          case @mode
+          when :name_substring
+            o = o.gsub(/([a-zA-Z0-9_+\.\-]+@[a-zA-Z0-9\.\-]+)/) { |om|
+              obfuscate(om)
+            }
+          else
+            os = o.scan(/<([^<>]+@[^<>]+)>/)
+            o = os.length.zero? ? obfuscate(o) : deep_process(os).join(", ")
+          end
         when Array
           o.map! do |obj|
             deep_process(obj)

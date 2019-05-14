@@ -82,11 +82,12 @@ Use `email_obfuscate` filter.
 
 ### mode (default: partial_name)
 
-mode            | Action | Example
-:--             | :--    | :-- 
-`domain_only`   | Only replace all characters in the domain part | `testuser@*******.***`
-`partial_name`  | Replace all characters in domain and partially in the name | `testu***@*******.***`
-`full`          | Replace all characters in name and domain part of address | `********@*******.***`
+mode              | Action | Example
+:--               | :--    | :-- 
+`domain_only`     | Only replace all characters in the domain part | `testuser@*******.***`
+`partial_name`    | Replace all characters in domain and partially in the name | `testu***@*******.***`
+`name_substring`  | Replace all characters in name and maintain surrounding context | `My old email address ********@example.com does not work any more`
+`full`            | Replace all characters in name and domain part of address | `********@*******.***`
 
 _Note: `.` and `@` are never replaced_
 
@@ -102,12 +103,12 @@ Input                        | Action
 
 ## Todo
 
-* Add tests!
 * Support configuration of which fields to act upon
+* Fine grained configuration of email delimiters
 * . . .
 
 ## Copyright
 
-* Copyright(c) 2018 JamesJJ 
+* Copyright(c) 2018-2019 JamesJJ 
 * License
   * Apache License, Version 2.0
