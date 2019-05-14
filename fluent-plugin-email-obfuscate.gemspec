@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name    = "fluent-plugin-email-obfuscate"
-  spec.version = "0.0.4"
+  spec.version = "0.0.5"
   spec.authors = ["JamesJJ"]
   spec.email   = ["jj@fcg.fyi"]
 
